@@ -1,2 +1,2 @@
 # ExpenseWise
-A Banking Management System with expense tracking feature.
+A digital banking platform with expense tracking feature.
