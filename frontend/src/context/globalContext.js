@@ -12,22 +12,29 @@ export const GlobalProvider = ({ children }) => {
 
   //calculate incomes
   const addIncome = async (income) => {
+    const newIncome = { ...income, userId: localStorage.getItem("id") };
     const response = await axios
-      .post(`${BASE_URL}income`, income)
+      .post(`${BASE_URL}income/add`, newIncome)
+      .then((res) => {
+        console.log(res);
+      })
       .catch((err) => {
         setError(err.response.data.message);
+        console.log(err);
       });
     getIncomes();
   };
 
   const getIncomes = async () => {
-    const response = await axios.get(`${BASE_URL}income`);
-    setIncomes(response.data);
-    console.log(response.data);
+    const response = await axios.get(
+      `${BASE_URL}user/${localStorage.getItem("id")}`
+    );
+    setIncomes(response.data.income);
   };
 
   const deleteIncome = async (id) => {
     const res = await axios.delete(`${BASE_URL}income/${id}`);
+    console.log(`${BASE_URL}income/${id}`);
     getIncomes();
   };
 
@@ -42,8 +49,11 @@ export const GlobalProvider = ({ children }) => {
 
   //calculate incomes
   const addExpense = async (income) => {
+    const newIncome = { ...income, userId: localStorage.getItem("id") };
     const response = await axios
-      .post(`${BASE_URL}expense`, income)
+      .post(`${BASE_URL}expense/add`, newIncome, {
+        headers: { "Content-Type": "application/json" },
+      })
       .catch((err) => {
         setError(err.response.data.message);
       });
@@ -53,7 +63,7 @@ export const GlobalProvider = ({ children }) => {
   const getExpenses = async () => {
     const response = await axios.get(`${BASE_URL}expense`);
     setExpenses(response.data);
-    console.log(response.data);
+    console.log(response.data.expense);
   };
 
   const deleteExpense = async (id) => {
